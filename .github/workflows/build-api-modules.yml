@@ -62,7 +62,7 @@ jobs:
       working-directory: ${{ matrix.module }}/build/distributions
       run: |
         S3_RESPONSE=`aws s3api put-object \
-          --bucket $SOURCE_BUCKET \
+          --bucket s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d \
           --key ${{ matrix.module }}/${{ github.sha }}.zip \
           --body template.zip`
         VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
@@ -72,8 +72,8 @@ jobs:
       run: |
         SIGNER_RESPONSE=`aws signer start-signing-job \
           --profile-name "${SIGNING_PROFILE}" \
-          --source "s3={bucketName=${SOURCE_BUCKET},key=${{ matrix.module }}/${{ github.sha }}.zip,version=$VERSION}" \
-          --destination "s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d/template.zip},prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
+          --source "s3=bucketName=s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d,key=${{ matrix.module }}/${{ github.sha }}.zip,version=$VERSION}" \
+          --destination "s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d},prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
         
