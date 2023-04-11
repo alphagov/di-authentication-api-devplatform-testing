@@ -49,17 +49,22 @@ jobs:
     - name: Build ${{ matrix.module }}
       run: ./gradlew --no-daemon :${{ matrix.module }}:buildZip
     
+    - name: Copy terraform into ${{ matrix.module }}/build/distributions
+      run: |
+        cp -r ./ci/terraform ./${{ matrix.module }}/build/distributions
+
+    - name: Zip ${{ matrix.module }} with terraform
+      working-directory: ${{ matrix.module }}/build/distributions
+      run: |
+        zip -r template.zip *
+
     - name: Upload ${{ matrix.module }} to source bucket
       working-directory: ${{ matrix.module }}/build/distributions
       run: |
-<<<<<<< HEAD
-        zip -r template.zip *
-        aws s3 cp template.zip "s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d/template.zip" --metadata "repository=demo-sam-app,commitsha=abc123"
-=======
         S3_RESPONSE=`aws s3api put-object \
           --bucket $SOURCE_BUCKET \
           --key ${{ matrix.module }}/${{ github.sha }}.zip \
-          --body ${{ matrix.module }}.zip`
+          --body template.zip`
         VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     
@@ -71,19 +76,9 @@ jobs:
           --destination "s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d/template.zip},prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
-
-    # - name: Copy terraform into ${{ matrix.module }}/build/distributions
-    #   run: |
-    #     cp -r ./ci/terraform ./${{ matrix.module }}/build/distributions
-
-    # - name: Zip ${{ matrix.module }} with terraform
-    #   working-directory: ${{ matrix.module }}/build/distributions
-    #   run: |
-    #     zip -r template.zip *
         
     # - name: Publish to S3
     #   working-directory: ${{ matrix.module }}/build/distributions
     #   run: |
     #     aws s3 cp template.zip "s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d/template.zip" --metadata "repository=demo-sam-app,commitsha=abc123"
->>>>>>> df1119d01 (Updating zip file command in build-api-modules)
         
