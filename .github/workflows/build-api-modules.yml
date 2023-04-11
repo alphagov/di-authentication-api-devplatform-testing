@@ -72,8 +72,8 @@ jobs:
       run: |
         SIGNER_RESPONSE=`aws signer start-signing-job \
           --profile-name "${SIGNING_PROFILE}" \
-          --source "s3=bucketName=plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d,key=${{ matrix.module }}/${{ github.sha }}.zip,version=$VERSION}" \
-          --destination "plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d},prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
+          --source "s3={bucketName=plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d,key=${{ matrix.module }}/${{ github.sha }}.zip,version=$VERSION}" \
+          --destination "{s3=plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d,prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
         
