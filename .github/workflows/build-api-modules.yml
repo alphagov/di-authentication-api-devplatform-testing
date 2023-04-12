@@ -55,7 +55,7 @@ jobs:
         S3_RESPONSE=`aws s3api put-object \
           --bucket dev-platform-destination-test \
           --key ${{ matrix.module }}/${{ github.sha }}.zip \
-          --body template.zip`
+          --body ${{ matrix.module }}.zip`
         VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     
