@@ -3,7 +3,7 @@ env:
   DEPLOYER_ROLE: arn:aws:iam::761723964695:role/plat-872-audit-pipeline-GitHubActionsRole-6FVSYM2IO5VO
   SOURCE_BUCKET: di-auth-lambda-source-20220215170204376700000003
   DESTINATION_BUCKET: di-auth-lambda-signed-20220215170204376200000002
-  SIGNING_PROFILE: arn:aws:signer:eu-west-2:761723964695:/signing-profiles/SigningProfile_Ag2f7jC8aokY/hsozMWacYH
+  SIGNING_PROFILE: arn:aws:signer:eu-west-2:761723964695:/signing-profiles/SigningProfile_Ag2f7jC8aokY
 
 on: workflow_dispatch
 
