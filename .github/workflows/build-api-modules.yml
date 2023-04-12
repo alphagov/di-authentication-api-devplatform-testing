@@ -48,15 +48,6 @@ jobs:
     
     - name: Build ${{ matrix.module }}
       run: ./gradlew --no-daemon :${{ matrix.module }}:buildZip
-    
-    - name: Copy terraform into ${{ matrix.module }}/build/distributions
-      run: |
-        cp -r ./ci/terraform ./${{ matrix.module }}/build/distributions
-
-    - name: Zip ${{ matrix.module }} with terraform
-      working-directory: ${{ matrix.module }}/build/distributions
-      run: |
-        zip -r template.zip *
 
     - name: Upload ${{ matrix.module }} to source bucket
       working-directory: ${{ matrix.module }}/build/distributions
@@ -80,9 +71,10 @@ jobs:
     - name: Upload ${{ matrix.module }} Terraform files
       working-directory: ci/terraform
       run: |
+        zip -r template.zip .
         S3_RESPONSE=`aws s3api put-object \
           --bucket plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d \
-          --key ${{ matrix.module }}/${{ github.sha }}.zip \
+          --key template.zip \
           --body template.zip`
         VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
         echo "VERSION=$VERSION" >> $GITHUB_ENV
