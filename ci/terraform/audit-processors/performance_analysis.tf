@@ -57,7 +57,7 @@ resource "aws_lambda_function" "performance_analysis_logging_lambda" {
 
   s3_bucket         = "dev-platform-destination-test"
   s3_key            = "signed-audit-processors-d78b3e796403b14bb32f909e952bfb89974958f5-cec526a5-c259-4ada-85e6-eeb7be5fcce7.zip"
-  s3_object_version = aws_s3_bucket_object.audit_processor_release_zip.version_id
+  # s3_object_version = aws_s3_bucket_object.audit_processor_release_zip.version_id
 
   code_signing_config_arn = local.lambda_code_signing_configuration_arn
 
