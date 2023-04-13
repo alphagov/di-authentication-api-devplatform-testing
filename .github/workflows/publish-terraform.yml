@@ -1,0 +1,44 @@
+name: Publish Terraform Modules to Build env
+# This GHA zips all Terraform files found inside working-directory and publishes the template.zip in SP build environment artifact source bucket
+# Provenanace data attached to the uploaded artifact
+#   repository
+#   commitsha
+
+env:
+  DEPLOYER_ROLE: arn:aws:iam::761723964695:role/plat-872-audit-pipeline-GitHubActionsRole-6FVSYM2IO5VO
+  BUCKET: s3://plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d
+
+# TODO Update after testing
+on: workflow_dispatch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: ${{ env.DEPLOYER_ROLE }}
+          aws-region: eu-west-2
+
+      - name: Zip modules
+        working-directory: ci/terraform
+        run: |
+          zip -r terraform.zip *
+        shell: bash
+
+      - name: Upload to S3
+        working-directory: ci/terraform
+        run: |
+          zip -r template.zip .
+        S3_RESPONSE=`aws s3api put-object \
+          --bucket ${{BUCKET}} \
+          --key template.zip \
+          --body template.zip`
+        VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        shell: bash

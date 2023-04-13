@@ -68,6 +68,7 @@ jobs:
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
     
+    # Refactor into own workflow
     - name: Upload ${{ matrix.module }} Terraform files
       working-directory: ci/terraform
       run: |
