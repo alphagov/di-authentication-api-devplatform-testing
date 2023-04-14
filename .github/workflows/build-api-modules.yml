@@ -67,8 +67,12 @@ jobs:
           --destination "s3={bucketName=dev-platform-destination-test,prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
-    
-    # Refactor into own workflow
+  
+    - name: Download ${{ matrix.module }} lambda zip files
+      working-directory: ci/terraform/${{ matrix.module }}
+      run: |
+        aws s3 cp s3://dev-platform-destination-test/signed-${{ matrix.module }}-${{ github.sha }}- ./artifacts/audit-processors.zip --recursive
+
     - name: Upload ${{ matrix.module }} Terraform files
       working-directory: ci/terraform
       run: |
