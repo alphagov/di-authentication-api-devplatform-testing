@@ -1,4 +1,4 @@
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
 ]
-lambda_zip_file = "./artifacts/"
+lambda_zip_file = "./artifacts/signed-audit-processors.zip"
