@@ -68,10 +68,10 @@ jobs:
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
   
-    - name: Download ${{ matrix.module }} lambda zip files
+    - name: Download and copy ${{ matrix.module }} lambda zip files
       working-directory: ci/terraform/${{ matrix.module }}
       run: |
-        aws s3 cp s3://dev-platform-destination-test/signed-${{ matrix.module }}-${{ github.sha }}- ./artifacts/audit-processors.zip --recursive
+        aws s3 cp s3://dev-platform-destination-test ./artifacts --recursive --include "signed-${{ matrix.module }}-${{ github.sha}}-*.zip"
 
     - name: Upload ${{ matrix.module }} Terraform files
       working-directory: ci/terraform
