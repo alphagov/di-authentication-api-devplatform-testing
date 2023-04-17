@@ -5,7 +5,10 @@ env:
   DESTINATION_BUCKET: di-auth-lambda-signed-20220215170204376200000002
   SIGNING_PROFILE: SigningProfile_Ag2f7jC8aokY
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
