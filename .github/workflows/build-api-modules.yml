@@ -72,7 +72,7 @@ jobs:
       working-directory: ci/terraform/${{ matrix.module }}
       run: |
         aws s3 cp s3://dev-platform-destination-test/ ./artifacts --recursive --exclude "*" --include "signed-${{ matrix.module }}-${{ github.sha }}-*"
-        mv signed-audit-processors-*.zip signed-audit-processors.zip
+        mv artifacts/signed-audit-processors-*.zip artifacts/signed-audit-processors.zip
 
     - name: Upload ${{ matrix.module }} Terraform files
       working-directory: ci/terraform
