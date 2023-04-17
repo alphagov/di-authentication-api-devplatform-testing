@@ -67,20 +67,3 @@ jobs:
           --destination "s3={bucketName=dev-platform-destination-test,prefix=signed-${{ matrix.module }}-${{ github.sha }}-}"`
         JOB_ID=`echo $SIGNER_RESPONSE | jq .jobId -r`
         aws signer wait successful-signing-job --job-id $JOB_ID
-  
-    - name: Download and copy ${{ matrix.module }} lambda zip
-      working-directory: ci/terraform/${{ matrix.module }}
-      run: |
-        aws s3 cp s3://dev-platform-destination-test/ ./artifacts --recursive --exclude "*" --include "signed-${{ matrix.module }}-${{ github.sha }}-*"
-        mv artifacts/signed-audit-processors-*.zip artifacts/signed-audit-processors.zip
-
-    - name: Upload ${{ matrix.module }} Terraform files
-      working-directory: ci/terraform
-      run: |
-        zip -r template.zip .
-        S3_RESPONSE=`aws s3api put-object \
-          --bucket plat-872-audit-pipeline-githubartifactsourcebucke-xsuo8xq7wb9d \
-          --key template.zip \
-          --body template.zip`
-        VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
