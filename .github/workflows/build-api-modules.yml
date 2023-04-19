@@ -3,7 +3,7 @@ env:
   DEPLOYER_ROLE: arn:aws:iam::761723964695:role/plat-872-audit-pipeline-GitHubActionsRole-6FVSYM2IO5VO
   SOURCE_BUCKET: dev-platform-destination-test
   DESTINATION_BUCKET: dev-platform-destination-test
-  SIGNING_PROFILE: di_auth_lambda_signing_20220215170204371800000001
+  SIGNING_PROFILE: SigningProfile_Ag2f7jC8aokY
 
 on:
   push:
