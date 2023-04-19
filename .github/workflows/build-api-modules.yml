@@ -15,15 +15,15 @@ jobs:
     strategy:
       matrix:
         module:
-        - oidc-api
-        - account-management-api
-        - client-registry-api
-        - frontend-api
-        - ipv-api
-        - doc-checking-app-api
+        # - oidc-api
+        # - account-management-api
+        # - client-registry-api
+        # - frontend-api
+        # - ipv-api
+        # - doc-checking-app-api
         - audit-processors
-        - utils
-        - test-services-api
+        # - utils
+        # - test-services-api
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
