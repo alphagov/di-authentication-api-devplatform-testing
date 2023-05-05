@@ -1,0 +1,10 @@
+logging_endpoint_arn = "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"
+logging_endpoint_arns = ["arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"]
+test_client_email_allowlist = "${TEST_CLIENT_EMAIL_ALLOWLIST}"
+test_users = "${TEST_USERS}"
+test_account_recovery_blocks = "${TEST_ACCOUNT_RECOVERY_BLOCKS}"
+password_pepper = "${PASSWORD_PEPPER}"
+common_state_bucket = "${STATE_BUCKET}"
+di_tools_signing_profile_version_arn = "${DI_TOOLS_SIGNING_PROFILE_VERSION_ARN}"
+tools_account_id = "${DI_TOOLS_ACCOUNT_NUMBER}"
+lock = "${ENABLE_STATE_LOCKING}"
